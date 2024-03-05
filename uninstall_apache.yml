@@ -3,6 +3,8 @@
   hosts: debian
   become: true
   tasks:
+
+  
     - name: Uninstall Apache2 package
       apt:
         name: apache2

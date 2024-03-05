@@ -1,15 +1,31 @@
 ---
 - name: Install Apache
-  hosts: debian
-  become: true
+  hosts: all
+  become: true  # Use privilege escalation to become the root user
   tasks:
-
+#update Debian based OS
     - name: Update apt cache
       apt:
-        update_cache: yes
-        
-    - name: Install Apache2 package
-      apt:
-        name: apache2
-        state: present
+        update_cache: yes  # This will update the apt package cache to ensure it's up to date
+      when: ansible_distribution in ['Debian', 'Ubuntu']  # This task will only run on Debian or Ubuntu systems
 
+    - name: Install Apache2 package on Debian based OS
+      apt:
+        name: apache2  # Specifies the apache2 package to be installed
+        state: present  # Ensures the apache2 package is installed
+      when: ansible_distribution in ['Debian', 'Ubuntu']  # This task will only run on Debian or Ubuntu systems
+
+#update RedHat based OS
+    - name: Update yum cache
+      yum:
+        update_cache: yes  # This will update the yum package cache to ensure it's up to date
+      when: ansible_distribution in ['RedHat', 'CentOS']  # This task will only run on RedHat or CentOS systems
+
+    - name: Install Apache2 package on RedHat based OS
+      yum:
+        name:   httpd  # Specifies the httpd package to be installed
+        state: present  # Ensures the httpd package is installed
+      when: ansible_distribution in ['RedHat', 'CentOS']  # This task will only run on RedHat or CentOS systems
+
+
+    
