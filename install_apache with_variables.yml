@@ -1,0 +1,15 @@
+---
+- name: Install Apache
+  hosts: redhat
+  become: true  # Use privilege escalation to become the root user
+  tasks:
+
+
+    - name: Install Apache2 and php package on Debian based OS
+      package: # This is the package module, which is used to install packages on any system 
+        name: 
+           - "{{apache_package}}"  # Variable for Apache package name, allows customization
+           - "{{php_package}}"  # Variable for PHP package name, allows customization
+        state: present  # Ensures the specified packages are installed
+        update_cache: yes  # Updates the apt package cache before installing, ensuring the latest versions are installed
+

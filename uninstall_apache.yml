@@ -1,12 +1,23 @@
 ---
-- name: Uninstall Apache
-  hosts: debian
-  become: true
+- name: Install Apache
+  hosts: all
+  become: true  # Use privilege escalation to become the root user
   tasks:
 
-  
-    - name: Uninstall Apache2 package
-      apt:
-        name: apache2
-        state: absent
 
+    - name: Install Apache2 and php package on Debian based OS
+      apt:
+        name: 
+           - apache2  # Specifies the apache2 and php package to be installed
+           - libapache2-mod-php  # Specifies the libapache2-mod-php package to be installed 
+        state: absent  # Ensures the apache2 and libapache2-mod-php packages are uninstalled
+      when: ansible_distribution in ['Debian', 'Ubuntu']  # This task will only run on Debian or Ubuntu systems
+
+      
+    - name: Install Apache2 and php package on RedHat based OS
+      yum:
+        name:   
+          - httpd  # Specifies the httpd package to be installed
+          - php  # Specifies the php package to be installed
+        state: absent  # Ensures the httpd and php packages are uninstalled
+      when: ansible_distribution in ['RedHat', 'CentOS']  # This task will only run on RedHat or CentOS systems
