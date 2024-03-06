@@ -4,41 +4,53 @@
   become: true  # Use privilege escalation to become the root user
   tasks:  # List of tasks to be executed on the hosts
 
+    - name: Filter and return only selected facts
+      ansible.builtin.setup:
+          filter:
+            - 'ansible_distribution'
+            - 'ansible_machine_id'
+            - 'ansible_*_mb'
+
     - name: install updates on (CentOS and RedHat) based OS  # A task to install updates on CentOS and RedHat
+      tags: always
       yum:  # Using the yum module to manage packages on CentOS and RedHat
         update_only: yes  # Only update the packages without installing new ones
         update_cache: yes  # Update the package cache before installing, ensuring the latest versions are installed
       when: ansible_distribution in ['RedHat', 'CentOS']  # Condition to run this task on RedHat and CentOS systems
 
     - name: install updates on (Debian and Ubuntu) based OS  # A task to install updates on Debian and Ubuntu
+      tags: always
       apt:  # Using the apt module to manage packages on Debian and Ubuntu
         upgrade: dist  # Perform a distribution upgrade
         update_cache: yes  # Update the package cache before installing, ensuring the latest versions are installed
       when: ansible_distribution in ['Debian', 'Ubuntu']  # Condition to run this task on Debian and Ubuntu systems---
 
 
-- hosts: web_server
+- hosts: web_servers
   become: true
   tasks:
 
     - name: install apache2 on Debian flavor
+      tags: apache , apache2 , Debian
       apt:
         name: apache2
         state: latest
       when: ansible_distribution in ['Debian', 'Ubuntu']
 
     - name: install apache2 on RedHat flavor
+      tags: apache , httpd , RedHat
       yum:
         name: httpd
         state: latest
       when: ansible_distribution in ['RedHat', 'CentOS']
 
 
-- hosts: db_server
+- hosts: db_servers
   become: true
   tasks:
     
    - name: install mariadb and  on Debian flavor 
+     tags: mariadb , Debian , db
      apt:
        name:
          - mariadb-server
@@ -46,7 +58,19 @@
      when: ansible_distribution in ['Debian', 'Ubuntu'] 
 
    - name: install mariadb and  on RedHat flavor  
+     tags: mariadb , RedHat , db
      yum:
        name: mariadb
        state: latest
      when: ansible_distribution in ['RedHat', 'CentOS']  
+     
+- hosts: file_servers
+  become: true
+  tasks:
+
+    - name: install samba using the pacakge modle on any flavor OS
+      tags: samba 
+      package:
+        name: samba
+        state: present
+            
