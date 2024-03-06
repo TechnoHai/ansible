@@ -5,7 +5,7 @@
   tasks:
 
 
-    - name: Install Apache2 and php package on Debian based OS
+    - name: unInstall Apache2 and php package on Debian based OS
       apt:
         name: 
            - apache2  # Specifies the apache2 and php package to be installed
@@ -14,7 +14,7 @@
       when: ansible_distribution in ['Debian', 'Ubuntu']  # This task will only run on Debian or Ubuntu systems
 
       
-    - name: Install Apache2 and php package on RedHat based OS
+    - name: unInstall Apache2 and php package on RedHat based OSInstall Apache2 and php package on RedHat based OS
       yum:
         name:   
           - httpd  # Specifies the httpd package to be installed

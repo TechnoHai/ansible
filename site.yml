@@ -1,0 +1,52 @@
+---
+- name: Update systems  # The name of the playbook to update systems
+  hosts: all  # The hosts on which the tasks will be executed
+  become: true  # Use privilege escalation to become the root user
+  tasks:  # List of tasks to be executed on the hosts
+
+    - name: install updates on (CentOS and RedHat) based OS  # A task to install updates on CentOS and RedHat
+      yum:  # Using the yum module to manage packages on CentOS and RedHat
+        update_only: yes  # Only update the packages without installing new ones
+        update_cache: yes  # Update the package cache before installing, ensuring the latest versions are installed
+      when: ansible_distribution in ['RedHat', 'CentOS']  # Condition to run this task on RedHat and CentOS systems
+
+    - name: install updates on (Debian and Ubuntu) based OS  # A task to install updates on Debian and Ubuntu
+      apt:  # Using the apt module to manage packages on Debian and Ubuntu
+        upgrade: dist  # Perform a distribution upgrade
+        update_cache: yes  # Update the package cache before installing, ensuring the latest versions are installed
+      when: ansible_distribution in ['Debian', 'Ubuntu']  # Condition to run this task on Debian and Ubuntu systems---
+
+
+- hosts: web_server
+  become: true
+  tasks:
+
+    - name: install apache2 on Debian flavor
+      apt:
+        name: apache2
+        state: latest
+      when: ansible_distribution in ['Debian', 'Ubuntu']
+
+    - name: install apache2 on RedHat flavor
+      yum:
+        name: httpd
+        state: latest
+      when: ansible_distribution in ['RedHat', 'CentOS']
+
+
+- hosts: db_server
+  become: true
+  tasks:
+    
+   - name: install mariadb and  on Debian flavor 
+     apt:
+       name:
+         - mariadb-server
+       state: latest
+     when: ansible_distribution in ['Debian', 'Ubuntu'] 
+
+   - name: install mariadb and  on RedHat flavor  
+     yum:
+       name: mariadb
+       state: latest
+     when: ansible_distribution in ['RedHat', 'CentOS']  
