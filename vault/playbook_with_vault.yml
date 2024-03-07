@@ -1,0 +1,11 @@
+---
+- name: playbook with vault
+  hosts: all
+  tasks: 
+    - name: include vault
+      ansible.builtin.include_vars:
+        file: mypassword.yml
+
+    - name: print mypassword
+      debug:
+        var: mypassword
