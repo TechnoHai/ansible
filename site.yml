@@ -4,12 +4,6 @@
   become: true  # Use privilege escalation to become the root user
   tasks:  # List of tasks to be executed on the hosts
 
-    - name: Filter and return only selected facts
-      ansible.builtin.setup:
-          filter:
-            - 'ansible_distribution'
-            - 'ansible_machine_id'
-            - 'ansible_*_mb'
 
     - name: install updates on (CentOS and RedHat) based OS  # A task to install updates on CentOS and RedHat
       tags: always

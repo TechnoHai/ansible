@@ -1,0 +1,12 @@
+---
+- name: Ansible Copy Directory Example Local to Remote
+  hosts: db_servers
+  tasks:
+    - name: Copying the Directory and its contents
+      become: true 
+      copy:
+        src: /home/hai/git/ansible/files/zsh/
+        dest: /home/hai/test
+        owner: hai
+        group: hai        
+        mode: 0644
