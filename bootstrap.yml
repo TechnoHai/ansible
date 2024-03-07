@@ -9,15 +9,15 @@
       tags: always
       dnf:  # Using the dnf module to manage packages on CentOS and RedHat
         name: "*"
+        update_only: yes  # Only update the packages without installing new ones
         update_cache: yes  # Update the package cache before installing, ensuring the latest versions are installed
-      changed_when: False  # Do not report the task as changed, even cache is up to date
       when: ansible_distribution in ['RedHat', 'CentOS']  # Condition to run this task on RedHat and CentOS systems
 
     - name: install updates on (Debian and Ubuntu) based OS  # A task to install updates on Debian and Ubuntu
       tags: always
       apt:  # Using the apt module to manage packages on Debian and Ubuntu
+        upgrade: dist  # Perform a distribution upgrade
         update_cache: yes  # Update the package cache before installing, ensuring the latest versions are installed
-      changed_when: False  # Do not report the task as changed, even cache is up to date
       when: ansible_distribution in ['Debian', 'Ubuntu']  # Condition to run this task on Debian and Ubuntu systems---
 
 
@@ -39,7 +39,7 @@
         key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCrBHW/k5wefmLPGVSycPZ4XCuTOoSRsqTTzWdy0CAmwTgB6IwODuhkRelMtBDknHLKpCEwhRkAqXSsfcAytk445pww5TNhhhhGYiifiWFfFNGtlo65jjo3MyuVjocXx7Wc9YMHG7nE27hhORvk2XpjZ1/xjU5bFG+Y8SBpjUJ9wm4QMUBxduFyf2TxhM5kzyWHNbUgMhnOOE/kIxFV4mqc/ACyHY+zE5JEZayzXvUsX28NhM8CqqDu/6OxFcQk7mSK850muPPYMUB62JdW07KY8bR2xRm/322MitH/mlTBJovDauPbgGKR0tzoa/luDW4bqBPXr9R5Ft9Zhxzs3F1mRhhEZKgAI3WtYxJptyuYqolJDxavXiVr43t0Cdc2F9KFsvdfBjEJX8hjHJ9qNLFHrk4kMAlyfFcvLJc98ubRK7SJifSOQ3M2ZzUGtq5N01KjE+4B7fcGkV9CWqGgKTYVJybny2flzNG02nOA55iOmk7ePW1hhqAm+drHUOOSBnE= hai@Hai-MiniPC"
         # The SSH key to be added for the user
 
-    - name: add sudoers for ansible  # Task to add 'ansible' to the sudoers file
+    - name: add sudoers for user ansible  # Task to add 'ansible' to the sudoers file
       tags: always  # This task is always executed
       copy:
         src: sudoer_ansible  # The source file containing sudoers configuration
@@ -47,69 +47,3 @@
         owner: root  # The owner of the file
         group: root  # The group owner of the file
         mode: 0440  # The permissions of the file
-
-- hosts: web_servers
-  become: true
-  tasks:
-
-    - name: install apache2 on Debian flavor
-      tags: apache , apache2 , Debian
-      apt:
-        name: apache2
-        state: latest
-      when: ansible_distribution in ['Debian', 'Ubuntu']
-
-    - name: install httpd on RedHat flavor
-      tags: apache , httpd , RedHat
-      yum:
-        name: 
-        - httpd
-        - php
-        state: latest
-      when: ansible_distribution in ['RedHat', 'CentOS']
-
-    - name: start httpd on RedHat flavor OS  # A task to start the httpd service specifically for RedHat flavor OS
-      tags: apache, httpd, RedHat  # Tags associated with this task for identification and organization
-      service:  # Using the service module to manage services
-        name: httpd  # The name of the service to be managed (httpd)
-        state: started  # Ensure that the service is in the 'started' state
-        enabled: yes  # Enable the service to start on boot
-      when: ansible_distribution in ['RedHat', 'CentOS']  # Condition to run this task on RedHat and CentOS systems
-
-
-- hosts: db_servers
-  become: true
-  tasks:
-    
-   - name: install mariadb and  on Debian flavor 
-     tags: mariadb , Debian , db
-     apt:
-       name:
-         - mariadb-server
-       state: latest
-     when: ansible_distribution in ['Debian', 'Ubuntu'] 
-
-   - name: install mariadb and  on RedHat flavor  
-     tags: mariadb , RedHat , db
-     yum:
-       name: mariadb
-       state: latest
-     when: ansible_distribution in ['RedHat', 'CentOS']  
-
-   - name: change db servers dns resolve file
-     tags: db
-     lineinfile:
-       path: /etc/resolv.conf
-       regexp: 'nameserver'
-       line: nameserver 10.100.102.101
-     
-- hosts: file_servers
-  become: true
-  tasks:
-
-    - name: install samba using the pacakge modle on any flavor OS
-      tags: samba 
-      package:
-        name: samba
-        state: present
-            
