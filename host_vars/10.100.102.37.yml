@@ -1,0 +1,6 @@
+apache_package_name: apache2
+apache_service_name: apache2
+php_package_name: libapache2-mod-php
+ssh_users: hai, ansible
+ssh_template_file: ssh_config_debian.j2
+

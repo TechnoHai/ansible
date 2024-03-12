@@ -35,3 +35,8 @@
   become: true
   roles:
     - file_servers
+
+- hosts: workstations
+  become: true
+  roles:
+    - workstations

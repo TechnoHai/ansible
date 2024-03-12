@@ -1,0 +1,8 @@
+apache_package_name: httpd
+apache_service_name: httpd
+php_package_name: php
+ssh_users: hai, ansible
+ssh_template_file: ssh_config_redhat.j2
+
+
+

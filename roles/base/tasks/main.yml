@@ -3,3 +3,13 @@
   authorized_key: 
     user: ansible  # The user for whom the SSH key will be added
     key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQxSmIw1bBSfIenY5x3btNZ1eClWkrLNAggGS/LmptelS1SYE7hTPP8rX1ld+CKuiVme4PdOX0EfwN0XbW6XCm1hagu2BLxx58d6tGdtrZjHFjCYMxocV8YwhkjCz+TJnsztdEpOIlpDGGDmaOXV5/f7jKhSfaJuYUBM+O8MW+E9yujP4vDDFXm7C7IG4+snOdIvg+VocCM6M8kULVncdKGUNPekHXhGzAeKBpfYzx82TAFrbeR2+no1XOlj1ecFkcOXziew3JGLJlQSV/qe0ateKQQG+ms+7xtF0vt6FhYFE32q8w10em5AoMVpOxs/V/SKm3eLEd+8ZOrLRqYH5Kx8YfgA85sxA8j02JjSP6Ne057E4f1zjQlqsb+cTpW15t+kF7bFbGjZWPZmomoFwAlmsbLRT3Eb+MjZyCiktu6Oo3JhbAb3IuK65siVOe6PLZRPeMVjZXgV0viYQ1Tfb/IB/FlD306dzkekWg5XmIhUoWWdksboqFUvTGX23srqs= hai@ubuntu"
+
+- name: generate ssh config file from temate
+  tags: ssh
+  template:
+    src: "{{ ssh_template_file }}"
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart_sshd

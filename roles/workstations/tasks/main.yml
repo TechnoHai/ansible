@@ -1,0 +1,6 @@
+- name: install ncdu on any flavor OS
+  tags: ncdu
+  package:
+    name: ncdu
+    state: present
+
