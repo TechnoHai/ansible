@@ -1,0 +1,23 @@
+- name: install apache2 on Debian flavor
+  tags: apache , apache2 , Debian
+  apt:
+    name: apache2
+    state: latest
+  when: ansible_distribution in ['Debian', 'Ubuntu']
+
+- name: install httpd on RedHat flavor
+  tags: apache , httpd , RedHat
+  yum:
+    name: 
+    - httpd
+    - php
+    state: latest
+  when: ansible_distribution in ['RedHat', 'CentOS']
+
+- name: start httpd on RedHat flavor OS  # A task to start the httpd service specifically for RedHat flavor OS
+  tags: apache, httpd, RedHat  # Tags associated with this task for identification and organization
+  service:  # Using the service module to manage services
+    name: httpd  # The name of the service to be managed (httpd)
+    state: started  # Ensure that the service is in the 'started' state
+    enabled: yes  # Enable the service to start on boot
+  when: ansible_distribution in ['RedHat', 'CentOS']  # Condition to run this task on RedHat and CentOS systems

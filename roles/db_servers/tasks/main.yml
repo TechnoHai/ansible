@@ -1,0 +1,21 @@
+- name: install mariadb and  on Debian flavor 
+  tags: mariadb , Debian , db
+  apt:
+    name:
+      - mariadb-server
+    state: latest
+  when: ansible_distribution in ['Debian', 'Ubuntu'] 
+
+- name: install mariadb and  on RedHat flavor  
+  tags: mariadb , RedHat , db
+  yum:
+    name: mariadb
+    state: latest
+  when: ansible_distribution in ['RedHat', 'CentOS']  
+
+- name: change db servers dns resolve file
+  tags: db
+  lineinfile:
+    path: /etc/resolv.conf
+    regexp: 'nameserver'
+    line: nameserver 10.100.102.101

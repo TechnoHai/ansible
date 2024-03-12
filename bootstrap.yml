@@ -8,7 +8,6 @@
     - name: install updates on (CentOS and RedHat) based OS  # A task to install updates on CentOS and RedHat
       tags: always
       dnf:  # Using the dnf module to manage packages on CentOS and RedHat
-        name: "*"
         update_only: yes  # Only update the packages without installing new ones
         update_cache: yes  # Update the package cache before installing, ensuring the latest versions are installed
       when: ansible_distribution in ['RedHat', 'CentOS']  # Condition to run this task on RedHat and CentOS systems
@@ -36,7 +35,7 @@
       tags: ssh , always  # Tags for task identification and selective execution
       authorized_key: 
         user: ansible  # The user for whom the SSH key will be added
-        key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCrBHW/k5wefmLPGVSycPZ4XCuTOoSRsqTTzWdy0CAmwTgB6IwODuhkRelMtBDknHLKpCEwhRkAqXSsfcAytk445pww5TNhhhhGYiifiWFfFNGtlo65jjo3MyuVjocXx7Wc9YMHG7nE27hhORvk2XpjZ1/xjU5bFG+Y8SBpjUJ9wm4QMUBxduFyf2TxhM5kzyWHNbUgMhnOOE/kIxFV4mqc/ACyHY+zE5JEZayzXvUsX28NhM8CqqDu/6OxFcQk7mSK850muPPYMUB62JdW07KY8bR2xRm/322MitH/mlTBJovDauPbgGKR0tzoa/luDW4bqBPXr9R5Ft9Zhxzs3F1mRhhEZKgAI3WtYxJptyuYqolJDxavXiVr43t0Cdc2F9KFsvdfBjEJX8hjHJ9qNLFHrk4kMAlyfFcvLJc98ubRK7SJifSOQ3M2ZzUGtq5N01KjE+4B7fcGkV9CWqGgKTYVJybny2flzNG02nOA55iOmk7ePW1hhqAm+drHUOOSBnE= hai@Hai-MiniPC"
+        key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQxSmIw1bBSfIenY5x3btNZ1eClWkrLNAggGS/LmptelS1SYE7hTPP8rX1ld+CKuiVme4PdOX0EfwN0XbW6XCm1hagu2BLxx58d6tGdtrZjHFjCYMxocV8YwhkjCz+TJnsztdEpOIlpDGGDmaOXV5/f7jKhSfaJuYUBM+O8MW+E9yujP4vDDFXm7C7IG4+snOdIvg+VocCM6M8kULVncdKGUNPekHXhGzAeKBpfYzx82TAFrbeR2+no1XOlj1ecFkcOXziew3JGLJlQSV/qe0ateKQQG+ms+7xtF0vt6FhYFE32q8w10em5AoMVpOxs/V/SKm3eLEd+8ZOrLRqYH5Kx8YfgA85sxA8j02JjSP6Ne057E4f1zjQlqsb+cTpW15t+kF7bFbGjZWPZmomoFwAlmsbLRT3Eb+MjZyCiktu6Oo3JhbAb3IuK65siVOe6PLZRPeMVjZXgV0viYQ1Tfb/IB/FlD306dzkekWg5XmIhUoWWdksboqFUvTGX23srqs= hai@ubuntu"
         # The SSH key to be added for the user
 
     - name: add sudoers for user ansible  # Task to add 'ansible' to the sudoers file

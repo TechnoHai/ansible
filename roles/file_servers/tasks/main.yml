@@ -1,0 +1,5 @@
+- name: install samba using the pacakge modle on any flavor OS
+  tags: samba 
+  package:
+    name: samba
+    state: present
